@@ -288,7 +288,7 @@ class OIDCAuthenticationBackend(ModelBackend):
         payload = self.verify_token(id_token, nonce=nonce)
 
         if payload:
-            self.store_tokens(access_token, id_token)
+            self.store_tokens(access_token, id_token, token_info)
             try:
                 return self.get_or_create_user(access_token, id_token, payload)
             except SuspiciousOperation as exc:
@@ -297,7 +297,7 @@ class OIDCAuthenticationBackend(ModelBackend):
 
         return None
 
-    def store_tokens(self, access_token, id_token):
+    def store_tokens(self, access_token, id_token, token_info):
         """Store OIDC tokens."""
         session = self.request.session
 
